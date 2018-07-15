@@ -141,6 +141,27 @@ int main ( ) {
 					break;
 				}
 			}
+		} else if ( input == "set" ) { // If we want to set a player's score...
+			// Get the player we want to change the score of
+			std::string player_input;
+			std::cin >> player_input;
+			// For each player in the game...
+			for ( auto &player : player_score ) {
+				// If we found the right player...
+				if ( is_player( player_input, player.first ) ) {
+					// Get the new score.
+					int num;
+					std::cin >> num;
+					// Set player's score to that number.
+					player.second = num;
+					// Print some stuff.
+					std::cout << "Set Player " << player.first.name << "'s score to " << num << "." << std::endl;
+					// Print the player's information.
+					print( player.first, player.second );
+					// Early quit from player for loop.
+					break;
+				}
+			}
 		} else { // Otherwise...
 			// For each player in the game...
 			for ( auto &player : player_score ) {
@@ -161,6 +182,7 @@ int main ( ) {
 		// Show the prompt.
 		std::cout << "> ";
 	}
+
 	// Print final scores.
 	print( player_score );
 
