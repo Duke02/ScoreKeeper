@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <map>
+
 
 //! Holds the identification for a player.
 struct PlayerID {
@@ -66,6 +66,8 @@ struct PlayerID {
 	}
 };
 
+typedef std::map < PlayerID, int > PlayerScores;
+
 /**
  * Prints an individual player's score.
  * @param player_id The player to be printed.
@@ -82,7 +84,8 @@ bool is_num (const std::string &s);
  * Print all player scores.
  * @param scores a map holding the players' id as the key and their scores as their value.
  */
-void print (const std::map < PlayerID, int > &scores);
+void print (const PlayerScores &scores);
+
 /**
  * Checks if the given input is equivalent to a player id.
  * @param input The given input.
@@ -91,6 +94,9 @@ void print (const std::map < PlayerID, int > &scores);
  */
 bool is_player (const std::string &input, const PlayerID &player_id);
 
+void set_score (PlayerScores &scores);
+
+void add_to_score (PlayerScores &scores, const std::string &input);
 
 int main ( ) {
 
@@ -100,7 +106,7 @@ int main ( ) {
 	std::cin >> num_of_players;
 
 	//! All of the player scores.
-	std::map < PlayerID, int > player_score;
+	PlayerScores player_score;
 
 	// Add the players to the game.
 	for ( int i = 0; i < num_of_players; i++ ) {
@@ -111,8 +117,6 @@ int main ( ) {
 		player_score[ {name, i + 1} ] = 0;
 	}
 
-	//! The addition to the player's score.
-	int         addition;
 	//! The input from the console.
 	std::string input;
 
@@ -142,42 +146,11 @@ int main ( ) {
 				}
 			}
 		} else if ( input == "set" ) { // If we want to set a player's score...
-			// Get the player we want to change the score of
-			std::string player_input;
-			std::cin >> player_input;
-			// For each player in the game...
-			for ( auto &player : player_score ) {
-				// If we found the right player...
-				if ( is_player( player_input, player.first ) ) {
-					// Get the new score.
-					int num;
-					std::cin >> num;
-					// Set player's score to that number.
-					player.second = num;
-					// Print some stuff.
-					std::cout << "Set Player " << player.first.name << "'s score to " << num << "." << std::endl;
-					// Print the player's information.
-					print( player.first, player.second );
-					// Early quit from player for loop.
-					break;
-				}
-			}
+			// Then do it.
+			set_score( player_score );
 		} else { // Otherwise...
-			// For each player in the game...
-			for ( auto &player : player_score ) {
-				// If the input is the current player in the loop...
-				if ( is_player( input, player.first ) ) {
-					// Add the input to the player's score.
-					std::cin >> addition;
-					player.second += addition;
-					// Confirm we increased their score.
-					std::cout << player.first.name << " got " << addition << " points!" << std::endl;
-					// Print the current score of the player.
-					print( player.first, player.second );
-					// Early break.
-					break;
-				}
-			}
+			// Add to a player's score.
+			add_to_score( player_score, input );
 		}
 		// Show the prompt.
 		std::cout << "> ";
@@ -203,7 +176,7 @@ bool is_num (const std::string &s) {
 	return true;
 }
 
-void print (const std::map < PlayerID, int > &scores) {
+void print (const PlayerScores &scores) {
 	// For each player in the game...
 	for ( const auto &score : scores ) {
 		// Print their individual scores.
@@ -230,4 +203,46 @@ bool is_player (const std::string &input, const PlayerID &player_id) {
 	}
 	// Check if the input is the player's name.
 	return input == player_id.name;
+}
+
+void set_score (PlayerScores &scores) {
+	// Get the player we want to change the score of
+	std::string player_input;
+	std::cin >> player_input;
+	// For each player in the game...
+	for ( auto &player : scores ) {
+		// If we found the right player...
+		if ( is_player( player_input, player.first ) ) {
+			// Get the new score.
+			int num;
+			std::cin >> num;
+			// Set player's score to that number.
+			player.second = num;
+			// Print some stuff.
+			std::cout << "Set Player " << player.first.name << "'s score to " << num << "." << std::endl;
+			// Print the player's information.
+			print( player.first, player.second );
+			// Early quit from player for loop.
+			break;
+		}
+	}
+}
+
+void add_to_score (PlayerScores &scores, const std::string &input) {
+	// For each player in the game...
+	for ( auto &player : scores ) {
+		// If the input is the current player in the loop...
+		if ( is_player( input, player.first ) ) {
+			int addition;
+			// Add the input to the player's score.
+			std::cin >> addition;
+			player.second += addition;
+			// Confirm we increased their score.
+			std::cout << player.first.name << " got " << addition << " points!" << std::endl;
+			// Print the current score of the player.
+			print( player.first, player.second );
+			// Early break.
+			break;
+		}
+	}
 }
