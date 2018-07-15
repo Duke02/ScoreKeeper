@@ -32,7 +32,8 @@ Assumes 4 players were inputted as Adam, John, Sally, Susan.
 * `> A 4`
    ```
     Adam got 4 points!
-    Player 1: Adam has score 4.```
+    Player 1: Adam has score 4.
+    ```
 * `> John -2`
     ```
     John got -2 points!
