@@ -66,6 +66,7 @@ struct PlayerID {
 	}
 };
 
+//! Add an easy name for player scores.
 typedef std::map < PlayerID, int > PlayerScores;
 
 /**
@@ -94,8 +95,17 @@ void print (const PlayerScores &scores);
  */
 bool is_player (const std::string &input, const PlayerID &player_id);
 
+/**
+ * Sets an inputted player's score to an inputted value.
+ * @param scores The scores of the players in the game.
+ */
 void set_score (PlayerScores &scores);
 
+/**
+ * Add to a player's score with an inputted value.
+ * @param scores The scores of the player in the game.
+ * @param input The inputted player to be added to.
+ */
 void add_to_score (PlayerScores &scores, const std::string &input);
 
 int main ( ) {
