@@ -108,24 +108,11 @@ void set_score (PlayerScores &scores);
  */
 void add_to_score (PlayerScores &scores, const std::string &input);
 
+PlayerScores get_players ( );
+
 int main ( ) {
 
-	//! Total number of players.
-	int num_of_players;
-	std::cout << "How many players?" << std::endl;
-	std::cin >> num_of_players;
-
-	//! All of the player scores.
-	PlayerScores player_score;
-
-	// Add the players to the game.
-	for ( int i = 0; i < num_of_players; i++ ) {
-		std::cout << "What's player " << i + 1 << "'s name? " << std::endl;
-		std::string name;
-		std::cin >> name;
-		// Set the player's initial score to 0
-		player_score[ {name, i + 1} ] = 0;
-	}
+	auto player_score = get_players();
 
 	//! The input from the console.
 	std::string input;
@@ -255,4 +242,24 @@ void add_to_score (PlayerScores &scores, const std::string &input) {
 			break;
 		}
 	}
+}
+
+PlayerScores get_players ( ) {
+	//! Total number of players.
+	int num_of_players;
+	std::cout << "How many players?" << std::endl;
+	std::cin >> num_of_players;
+
+	//! All of the player scores.
+	PlayerScores player_score;
+
+	// Add the players to the game.
+	for ( int i = 0; i < num_of_players; i++ ) {
+		std::cout << "What's player " << i + 1 << "'s name? " << std::endl;
+		std::string name;
+		std::cin >> name;
+		// Set the player's initial score to 0
+		player_score[ {name, i + 1} ] = 0;
+	}
+	return player_score;
 }
